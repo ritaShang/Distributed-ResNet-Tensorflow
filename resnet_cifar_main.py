@@ -21,10 +21,10 @@ import tempfile
 import sys
 import os
 
-import cifar_input
+#import cifar_input
 import numpy as np
 import resnet_model
-import logist_model
+#import logist_model
 import tensorflow as tf
 
 FLAGS = tf.app.flags.FLAGS
@@ -47,9 +47,8 @@ flags.DEFINE_bool('eval_once', False,
 flags.DEFINE_string('log_root', '',
                            'Directory to keep the checkpoints. Should be a '
                            'parent directory of FLAGS.train_dir/eval_dir.')
-flags.DEFINE_integer('num_gpus', 0,
+flags.DEFINE_integer('num_gpus', 1,
                             'Number of gpus used for training. (0 or 1)')
-
 flags.DEFINE_integer("task_index", None,
                      "Worker task index, should be >= 0. task_index=0 is "
                      "the master worker task the performs the variable "
@@ -71,9 +70,9 @@ flags.DEFINE_boolean(
     "will use the worker hosts via their GRPC URLs (one client process "
     "per worker host). Otherwise, will create an in-process TensorFlow "
     "server.")
-flags.DEFINE_string("ps_hosts","localhost:2222",
+flags.DEFINE_string("ps_hosts",None,
                     "Comma-separated list of hostname:port pairs")
-flags.DEFINE_string("worker_hosts", "localhost:2223,localhost:2224",
+flags.DEFINE_string("worker_hosts", None,
                     "Comma-separated list of hostname:port pairs")
 flags.DEFINE_string("job_name", None,"job name: worker or ps")
 flags.DEFINE_string('data_format', 'channels_first',
@@ -127,8 +126,6 @@ def create_config_proto():
   #       rewriter_config_pb2.RewriterConfig.ON)
 
   return config
-
-
 
 
 def record_dataset(filenames):
